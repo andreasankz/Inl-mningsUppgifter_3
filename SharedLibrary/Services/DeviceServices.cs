@@ -22,20 +22,27 @@ namespace SharedLibrary.Services
         {
             while (true)
             {
-
-                var response = await httpClient.GetAsync(url);
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    var json = JsonConvert.DeserializeObject<TemperaturModel.Root>(await response.Content.ReadAsStringAsync());
+                    var response = await httpClient.GetAsync(url);
 
-                    var data = JsonConvert.SerializeObject(json);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var json = JsonConvert.DeserializeObject<TemperaturModel.Root>(await response.Content.ReadAsStringAsync());
+
+                        var data = JsonConvert.SerializeObject(json);
 
 
-                    var payload = new Message(Encoding.UTF8.GetBytes(data));
-                    await deviceClient.SendEventAsync(payload);
+                        var payload = new Message(Encoding.UTF8.GetBytes(data));
+                        await deviceClient.SendEventAsync(payload);
 
-                    Console.WriteLine(data);
+                        Console.WriteLine(data);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Something went wrong! {ex}");
+                    
                 }
                 
                 await Task.Delay(60 * 1000);
