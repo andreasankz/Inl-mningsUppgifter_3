@@ -41,7 +41,7 @@ namespace SharedLibrary.Services
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Something went wrong! {ex}");
+                    Console.WriteLine($"Something went wrong! {ex.Message}");
                     
                 }
                 
